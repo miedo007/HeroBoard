@@ -46,11 +46,15 @@ public class TurnManager : MonoBehaviour
     }
 
     public void EndTurn()
-    {
-        currentPlayer = (currentPlayer + 1) % 2; // Alternate between players
-        hasMoved = false;
-        hasAttacked = false;
+{
+    currentPlayer = (currentPlayer + 1) % 2; // Alternate between players
+    hasMoved = false;
+    hasAttacked = false;
 
-        Debug.Log($"Player {currentPlayer + 1}'s Turn!");
-    }
+    // Update the turn indicator
+    FindObjectOfType<TurnIndicatorManager>()?.UpdateTurnIndicator();
+
+    Debug.Log($"Player {currentPlayer + 1}'s Turn!");
+}
+
 }
