@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7930070606592881320}
   - component: {fileID: 1678436624506166802}
   - component: {fileID: 949498471704962788}
+  - component: {fileID: 1953019163903941354}
   m_Layer: 0
   m_Name: Unit
   m_TagString: Untagged
@@ -104,6 +105,18 @@ MonoBehaviour:
   damage: 10
   teamID: 0
   healthBar: {fileID: 8194932045672674429}
+--- !u!114 &1953019163903941354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 960102242520821298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74130020e88e12c49994d4a9a9792ec7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4742513502250968287
 GameObject:
   m_ObjectHideFlags: 0

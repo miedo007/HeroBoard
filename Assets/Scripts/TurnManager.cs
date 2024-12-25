@@ -51,10 +51,22 @@ public class TurnManager : MonoBehaviour
     hasMoved = false;
     hasAttacked = false;
 
-    // Update the turn indicator
+    // Reset all units' states and update highlights
+    foreach (UnitTurnState unitState in FindObjectsOfType<UnitTurnState>())
+    {
+        bool isCurrentPlayer = IsCurrentPlayer(unitState.GetComponent<UnitBase>().teamID);
+        if (isCurrentPlayer)
+        {
+            unitState.ResetState(); // Reset state for current player's units
+        }
+        unitState.UpdateHighlight(); // Update highlight for all units
+    }
+
+    // Update turn indicator
     FindObjectOfType<TurnIndicatorManager>()?.UpdateTurnIndicator();
 
     Debug.Log($"Player {currentPlayer + 1}'s Turn!");
 }
+
 
 }
