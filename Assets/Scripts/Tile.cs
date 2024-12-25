@@ -14,7 +14,7 @@ public class Tile : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _originalColor = _spriteRenderer.color; // Store the original tile color
 
-        // Optional: Randomly spawn units for testing
+        // Randomly spawn units for testing
         if (Random.value > 0.7f) // 30% chance to spawn a unit
         {
             SpawnUnit();
@@ -22,80 +22,98 @@ public class Tile : MonoBehaviour
     }
 
     void OnMouseDown()
+{
+    Debug.Log("Tile clicked!");
+
+    if (TurnManager.Instance == null)
     {
-        Debug.Log("Tile clicked!");
+        Debug.LogError("TurnManager.Instance is null!");
+        return;
+    }
 
-        if (GameManager.Instance == null)
-        {
-            Debug.LogError("GameManager.Instance is null!");
-            return;
-        }
+    // Case 1: Deselect the currently selected tile
+    if (isSelected)
+    {
+        Deselect();
+        GameManager.Instance.SelectTile(null);
+        return;
+    }
 
-        // Case 1: Deselect the currently selected tile
-        if (isSelected)
-        {
-            Deselect();
-            GameManager.Instance.SelectTile(null);
-            return;
-        }
+    // Case 2: If a tile with a unit is clicked
+    if (unitOnTile != null)
+    {
+        UnitBase targetUnit = unitOnTile.GetComponent<UnitBase>();
 
-        // Case 2: Select a tile with a unit
-        if (unitOnTile != null)
+        // Ensure the clicked unit belongs to the active player
+        if (!TurnManager.Instance.IsCurrentPlayer(targetUnit.teamID))
         {
             Tile selectedTile = GameManager.Instance.SelectedTile;
 
-            // If a unit is already selected, check if the clicked unit is an enemy
+            // Check if an enemy unit is targeted and the selected unit can attack
             if (selectedTile != null && selectedTile.unitOnTile != null)
             {
                 UnitBase selectedUnit = selectedTile.unitOnTile.GetComponent<UnitBase>();
-                UnitBase targetUnit = unitOnTile.GetComponent<UnitBase>();
+                UnitTurnState turnState = selectedTile.unitOnTile.GetComponent<UnitTurnState>();
 
-                if (selectedUnit != null && targetUnit != null)
+                // Check if the selected unit can attack
+                if (selectedUnit != null && turnState != null && !turnState.hasAttacked && selectedUnit.teamID != targetUnit.teamID)
                 {
-                    // Check if the target unit is an enemy (different team)
-                    if (selectedUnit.teamID != targetUnit.teamID && IsWithinRange(selectedTile))
+                    if (IsWithinRange(selectedTile))
                     {
-                        Debug.Log("Attacking enemy unit on tile: " + name);
+                        Debug.Log($"Attacking enemy unit on tile: {name}");
                         selectedUnit.Attack(targetUnit); // Perform the attack
+                        turnState.hasAttacked = true; // Mark the unit as having attacked
+                        TurnManager.Instance.RegisterAttack(); // Register the attack globally
                         HighlightValidAttackTargets(false);
                         HighlightValidTiles(false);
+                        GameManager.Instance.SelectTile(null); // Deselect after the attack
                         return;
                     }
                     else
                     {
-                        Debug.Log("Switching selection to friendly unit on tile: " + name);
+                        Debug.Log("Enemy unit is out of attack range.");
+                        return;
                     }
                 }
             }
 
-            // If no valid attack, switch selection to this unit
-            GameManager.Instance.SelectTile(this);
-            isSelected = true;
-            _spriteRenderer.color = Color.yellow; // Highlight the selected tile
-            HighlightValidTiles(true); // Highlight valid movement tiles
-            HighlightValidAttackTargets(true); // Highlight valid attack targets
+            Debug.Log("It's not this unit's turn!");
             return;
         }
 
-        // Case 3: Move the selected unit to an empty tile
-        if (GameManager.Instance.SelectedTile != null && unitOnTile == null)
-        {
-            Tile selectedTile = GameManager.Instance.SelectedTile;
-            if (IsWithinRange(selectedTile))
-            {
-                MoveUnitHere(selectedTile);
-                HighlightValidTiles(false);
-                HighlightValidAttackTargets(false);
-            }
-            else
-            {
-                Debug.Log("Tile is out of range.");
-            }
-            return;
-        }
-
-        Debug.Log("No valid action for this tile.");
+        // If a friendly unit is clicked, select it
+        GameManager.Instance.SelectTile(this);
+        isSelected = true;
+        _spriteRenderer.color = Color.yellow; // Highlight the selected tile
+        HighlightValidTiles(true); // Highlight valid movement tiles
+        HighlightValidAttackTargets(true); // Highlight valid attack targets
+        return;
     }
+
+    // Case 3: Move the selected unit to an empty tile
+    if (GameManager.Instance.SelectedTile != null && unitOnTile == null)
+    {
+        Tile selectedTile = GameManager.Instance.SelectedTile;
+        UnitBase selectedUnit = selectedTile.unitOnTile?.GetComponent<UnitBase>();
+        UnitTurnState turnState = selectedTile.unitOnTile?.GetComponent<UnitTurnState>();
+
+        if (IsWithinRange(selectedTile) && selectedUnit != null && turnState != null && !turnState.hasMoved)
+        {
+            MoveUnitHere(selectedTile);
+            turnState.hasMoved = true; // Mark the unit as having moved
+            TurnManager.Instance.RegisterMove(); // Register the move globally
+            HighlightValidTiles(false);
+        }
+        else
+        {
+            Debug.Log("Tile is out of range or unit has already moved.");
+        }
+        return;
+    }
+
+    Debug.Log("No valid action for this tile.");
+}
+
 
     public void Deselect()
     {
@@ -127,10 +145,9 @@ public class Tile : MonoBehaviour
                     renderer.color = (unitBase.teamID == 0) ? Color.blue : Color.red; // Blue for Team 1, Red for Team 2
                 }
             }
-        }
-        else
-        {
-            Debug.Log("A unit is already on this tile!");
+
+            // Add the UnitTurnState component for tracking actions
+            unit.AddComponent<UnitTurnState>();
         }
     }
 
@@ -146,7 +163,7 @@ public class Tile : MonoBehaviour
 
         // Move the unit to this tile
         unitOnTile = fromTile.unitOnTile;
-        unitOnTile.transform.position = transform.position; // Update the unit's position
+        unitOnTile.transform.position = transform.position;
 
         // Clear the old tile's unit reference
         fromTile.unitOnTile = null;
