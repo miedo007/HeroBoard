@@ -97,8 +97,15 @@ public class Tile : MonoBehaviour
                 UnitBase unit = unitOnTile.GetComponent<UnitBase>();
                 UnitTurnState turnState = unitOnTile.GetComponent<UnitTurnState>();
 
-                Debug.Log($"Unit: {unit}, TurnState: {turnState}");
-                detailsPanel?.UpdateUnitDetails(unit, turnState); // Update unit details
+                if (detailsPanel != null)
+                {
+                    detailsPanel.UpdateUnitDetails(unit, turnState); // Update unit details
+                    detailsPanel.UpdatePosition(unitOnTile.transform.position); // Move the panel
+                }
+                else
+                {
+                    Debug.LogError("UnitDetailsPanel not found!");
+                }
             }
             return;
         }
@@ -119,7 +126,15 @@ public class Tile : MonoBehaviour
 
                 // Update the Unit Details Panel
                 UnitDetailsPanel detailsPanel = FindObjectOfType<UnitDetailsPanel>();
-                detailsPanel?.UpdateUnitDetails(selectedUnit, turnState); // Update details after move
+                if (detailsPanel != null)
+                {
+                    detailsPanel.UpdateUnitDetails(selectedUnit, turnState); // Update details after move
+                    detailsPanel.UpdatePosition(unitOnTile.transform.position); // Move the panel
+                }
+                else
+                {
+                    Debug.LogError("UnitDetailsPanel not found!");
+                }
             }
             else
             {

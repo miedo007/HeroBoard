@@ -9,18 +9,19 @@ public class TurnManager : MonoBehaviour
     private bool hasAttacked = false; // Tracks if an attack has been made this turn
 
     void Awake()
+{
+    if (Instance == null)
     {
-        if (Instance == null)
-        {
-            Instance = this; // Assign the singleton instance
-            Debug.Log("TurnManager initialized.");
-        }
-        else
-        {
-            Destroy(gameObject); // Ensure only one TurnManager exists
-            Debug.LogWarning("Duplicate TurnManager detected and destroyed.");
-        }
+        Instance = this;
+        Debug.Log("TurnManager Instance initialized.");
     }
+    else
+    {
+        Destroy(gameObject); // Ensure only one TurnManager exists
+        Debug.LogError("Duplicate TurnManager detected and destroyed.");
+    }
+}
+
 
     public bool IsCurrentPlayer(int teamID)
     {

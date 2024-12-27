@@ -27,4 +27,17 @@ public class UnitDetailsPanel : MonoBehaviour
         attackText.text = "Attack:";
         actionsText.text = "Actions:";
     }
+
+    public void UpdatePosition(Vector3 worldPosition)
+    {
+        if (Camera.main != null)
+        {
+            Vector3 screenPosition = Camera.main.WorldToScreenPoint(worldPosition);
+            transform.position = screenPosition;
+        }
+        else
+        {
+            Debug.LogError("Camera.main is null! Ensure there's a Main Camera in the scene.");
+        }
+    }
 }
