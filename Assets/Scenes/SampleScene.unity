@@ -241,7 +241,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 252893554}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -253,8 +253,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 688, y: 413}
-  m_SizeDelta: {x: 1376, y: 826}
+  m_AnchoredPosition: {x: 688.00006, y: 413}
+  m_SizeDelta: {x: 216.9, y: 102}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &252893556
 MonoBehaviour:
@@ -271,6 +271,9 @@ MonoBehaviour:
   healthText: {fileID: 1415299209}
   attackText: {fileID: 1197575421}
   actionsText: {fileID: 941191386}
+  panelTransform: {fileID: 252893555}
+  verticalOffset: 85.1
+  horizontalOffset: 20
 --- !u!114 &252893557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,7 +287,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 0.9622642, g: 0.8356795, b: 0, a: 0.392}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -539,7 +542,7 @@ Canvas:
   m_GameObject: {fileID: 811432447}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0

@@ -99,8 +99,7 @@ public class Tile : MonoBehaviour
 
                 if (detailsPanel != null)
                 {
-                    detailsPanel.UpdateUnitDetails(unit, turnState); // Update unit details
-                    detailsPanel.UpdatePosition(unitOnTile.transform.position); // Move the panel
+                    detailsPanel.UpdateUnitDetails(unit, turnState, unitOnTile.transform.position); // Pass unit position
                 }
                 else
                 {
@@ -128,8 +127,7 @@ public class Tile : MonoBehaviour
                 UnitDetailsPanel detailsPanel = FindObjectOfType<UnitDetailsPanel>();
                 if (detailsPanel != null)
                 {
-                    detailsPanel.UpdateUnitDetails(selectedUnit, turnState); // Update details after move
-                    detailsPanel.UpdatePosition(unitOnTile.transform.position); // Move the panel
+                    detailsPanel.UpdateUnitDetails(selectedUnit, turnState, unitOnTile.transform.position); // Pass unit position
                 }
                 else
                 {
