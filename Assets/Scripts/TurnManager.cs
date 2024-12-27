@@ -13,10 +13,12 @@ public class TurnManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this; // Assign the singleton instance
+            Debug.Log("TurnManager initialized.");
         }
         else
         {
             Destroy(gameObject); // Ensure only one TurnManager exists
+            Debug.LogWarning("Duplicate TurnManager detected and destroyed.");
         }
     }
 
@@ -46,27 +48,25 @@ public class TurnManager : MonoBehaviour
     }
 
     public void EndTurn()
-{
-    currentPlayer = (currentPlayer + 1) % 2; // Alternate between players
-    hasMoved = false;
-    hasAttacked = false;
-
-    // Reset all units' states and update highlights
-    foreach (UnitTurnState unitState in FindObjectsOfType<UnitTurnState>())
     {
-        bool isCurrentPlayer = IsCurrentPlayer(unitState.GetComponent<UnitBase>().teamID);
-        if (isCurrentPlayer)
+        currentPlayer = (currentPlayer + 1) % 2; // Alternate between players
+        hasMoved = false;
+        hasAttacked = false;
+
+        // Reset all units' states and update highlights
+        foreach (UnitTurnState unitState in FindObjectsOfType<UnitTurnState>())
         {
-            unitState.ResetState(); // Reset state for current player's units
+            bool isCurrentPlayer = IsCurrentPlayer(unitState.GetComponent<UnitBase>().teamID);
+            if (isCurrentPlayer)
+            {
+                unitState.ResetState(); // Reset state for current player's units
+            }
+            unitState.UpdateHighlight(); // Update highlight for all units
         }
-        unitState.UpdateHighlight(); // Update highlight for all units
+
+        // Update turn indicator
+        FindObjectOfType<TurnIndicatorManager>()?.UpdateTurnIndicator();
+
+        Debug.Log($"Player {currentPlayer + 1}'s Turn!");
     }
-
-    // Update turn indicator
-    FindObjectOfType<TurnIndicatorManager>()?.UpdateTurnIndicator();
-
-    Debug.Log($"Player {currentPlayer + 1}'s Turn!");
-}
-
-
 }
