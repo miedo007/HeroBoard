@@ -197,9 +197,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bad0da182e339c4d9e0c23de1354fc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 5
-  height: 5
   tilePrefab: {fileID: 571336664392516053, guid: b321e36da253ab746914a7a66d5fd6e7, type: 3}
+  gridWidth: 5
+  gridHeight: 5
+  mainCamera: {fileID: 963194227}
 --- !u!4 &132094524
 Transform:
   m_ObjectHideFlags: 0
@@ -522,10 +523,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -586,6 +587,7 @@ GameObject:
   m_Component:
   - component: {fileID: 865038465}
   - component: {fileID: 865038466}
+  - component: {fileID: 865038467}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -621,6 +623,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectedTile: {fileID: 0}
+--- !u!114 &865038467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 865038464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33787882bd4cef8468a3ae5e40ef90bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 963194227}
+  boardTransform: {fileID: 0}
+  boardSize: {x: 0, y: 0}
 --- !u!1 &941191384
 GameObject:
   m_ObjectHideFlags: 0
@@ -881,10 +898,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1642754937}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -50, y: -112.4}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: 159.3, y: -250}
+  m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1028476283
 MonoBehaviour:
@@ -1358,7 +1375,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -1443,9 +1460,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1642754937}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 25, y: 25}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -100}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1919967231
