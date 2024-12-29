@@ -2,49 +2,36 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-    public GameObject tilePrefab; // Tile prefab to create tiles
-    public int gridWidth = 5; // Number of columns
-    public int gridHeight = 5; // Number of rows
-    public Camera mainCamera; // Reference to the main camera
+    public int columns = 5;
+    public int rows = 5;
+    public float tileSpacing = 0.1f; // Add this for spacing between tiles
+    public GameObject tilePrefab;
+
+    private CameraSetup cameraSetup;
 
     void Start()
     {
-        if (mainCamera == null)
-            mainCamera = Camera.main; // Use the main camera if none assigned
+        cameraSetup = FindObjectOfType<CameraSetup>();
+        if (cameraSetup == null)
+        {
+            Debug.LogError("CameraSetup not found!");
+            return;
+        }
 
         GenerateGrid();
-        CenterCameraOnGrid();
+        cameraSetup.SetBoardSize(columns, rows); // Update camera based on grid size
     }
 
-   void GenerateGrid()
-{
-    float tileSpacing = 0.1f; // Adjust this value to control the spacing between tiles
-
-    for (int x = 0; x < gridWidth; x++)
+    void GenerateGrid()
     {
-        for (int y = 0; y < gridHeight; y++)
+        for (int x = 0; x < columns; x++)
         {
-            // Apply spacing to the position
-            Vector3 tilePosition = new Vector3(x + x * 0.02f, y + y * 0.02f, 0);
-            Instantiate(tilePrefab, tilePosition, Quaternion.identity);
+            for (int y = 0; y < rows; y++)
+            {
+                // Adjust position to include spacing
+                Vector3 position = new Vector3(x + x * 0.02f, y + y * 0.02f, 0);
+                Instantiate(tilePrefab, position, Quaternion.identity);
+            }
         }
-    }
-}
-
-
-    void CenterCameraOnGrid()
-    {
-        // Calculate the center of the grid
-        Vector3 gridCenter = new Vector3((gridWidth - 1) / 2f, (gridHeight - 1) / 2f, -10);
-
-        // Set the camera position
-        mainCamera.transform.position = gridCenter;
-
-        // Adjust the camera's orthographic size to fit the grid
-        float aspectRatio = (float)Screen.width / Screen.height;
-        float verticalSize = gridHeight / 2f;
-        float horizontalSize = gridWidth / (2f * aspectRatio);
-
-        mainCamera.orthographicSize = Mathf.Max(verticalSize, horizontalSize);
     }
 }

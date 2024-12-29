@@ -22,6 +22,9 @@ public class UnitDetailsPanel : MonoBehaviour
                 return;
             }
         }
+
+        // Hide the panel at the start
+        ClearDetails();
     }
 
     public void UpdateUnitDetails(UnitBase unit, UnitTurnState turnState, Vector3 unitWorldPosition)

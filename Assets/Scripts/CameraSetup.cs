@@ -3,27 +3,28 @@ using UnityEngine;
 public class CameraSetup : MonoBehaviour
 {
     public Camera mainCamera;
-    public Transform boardTransform; // Reference to the board or parent object
-    public Vector2 boardSize; // Size of the board in units (Width, Height)
+    public float verticalExtraSpace = 1.5f; // Additional vertical space for health bars
 
     void Start()
     {
         if (mainCamera == null)
             mainCamera = Camera.main;
+    }
 
-        // Center the camera on the board
-        Vector3 boardCenter = new Vector3(boardSize.x / 2, boardSize.y / 2, -10);
+    public void SetBoardSize(int width, int height)
+    {
+        // Center the camera
+        Vector3 boardCenter = new Vector3((width - 1) / 2f, (height - 1) / 2f, -10);
         mainCamera.transform.position = boardCenter;
 
-        // Adjust the orthographic size to fit the board
+        // Adjust orthographic size to include extra space
         float aspectRatio = (float)Screen.width / Screen.height;
-        float requiredSize = boardSize.y / 2;
+        float verticalSize = (height / 2f) + verticalExtraSpace;
+        float horizontalSize = (width / 2f) / aspectRatio;
 
-        if (boardSize.x / aspectRatio > requiredSize)
-        {
-            requiredSize = boardSize.x / (2 * aspectRatio);
-        }
+        // Use the larger of the two to ensure grid fits
+        mainCamera.orthographicSize = Mathf.Max(verticalSize, horizontalSize);
 
-        mainCamera.orthographicSize = requiredSize;
+        Debug.Log($"Camera adjusted for board size: {width}x{height}");
     }
 }
